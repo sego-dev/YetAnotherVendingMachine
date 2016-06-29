@@ -55,5 +55,19 @@ namespace YetAnotherVendingMachine.Tests
             Assert.AreEqual(0, vendingMachine.Amount.Cents);
 
         }
+
+        [TestMethod]
+        public void ShouldReturnExistingMoneyWhenReturn()
+        {
+            var vendingMachine = new VendingMachine();
+            var coin = new Money()
+            {
+                Cents = 20
+            };
+            vendingMachine.InsertCoin(coin);
+            var moneyForReturn = vendingMachine.ReturnMoney();
+            Assert.AreEqual(20, moneyForReturn.Cents);
+
+        }
     }
 }
