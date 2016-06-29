@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace YetAnotherVendingMachine.Tests
 {
@@ -7,7 +6,7 @@ namespace YetAnotherVendingMachine.Tests
     public class VendingMachineTest
     {
         [TestMethod]
-        [ExpectedException(typeof(WrongCoinsException))]
+        [ExpectedException(typeof (WrongCoinsException))]
         public void ShouldThrowExceptionWhenWrongCoins()
         {
             var vendingMachine = new VendingMachine();

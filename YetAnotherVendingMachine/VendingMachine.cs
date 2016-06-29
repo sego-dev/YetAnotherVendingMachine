@@ -8,7 +8,11 @@
 
         public Money InsertCoin(Money amount)
         {
-            throw new System.NotImplementedException();
+            if (!CoinValidator.IsValid(amount))
+            {
+                throw new WrongCoinsException();
+            }
+            return new Money();
         }
 
         public Money ReturnMoney()
