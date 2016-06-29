@@ -38,7 +38,9 @@
 
         public Money ReturnMoney()
         {
-            throw new System.NotImplementedException();
+            var moneyForReturn = Amount;
+            Amount = new Money();
+            return moneyForReturn;
         }
 
         public Product Buy(int productNumber)
