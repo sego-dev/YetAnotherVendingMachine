@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoinValidator.cs" />
     <Compile Include="CustomExceptions\WrongCoinsException.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="IVendingMachine.cs" />
