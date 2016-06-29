@@ -1,10 +1,15 @@
-﻿namespace YetAnotherVendingMachine
+﻿using System;
+using System.Linq;
+using System.Xml.Linq;
+
+namespace YetAnotherVendingMachine
 {
     public class VendingMachine : IVendingMachine
     {
         public VendingMachine()
         {
             Amount = new Money();
+            Products = new Product[] {};
         }
         public string Manufacturer { get; }
         public Money Amount { get; private set; }
@@ -32,8 +37,30 @@
             Amount = new Money()
             {
                 Cents = Amount.Cents + amount.Cents,
-                Euros = Amount.Euros + amount.Cents
+                Euros = Amount.Euros + amount.Euros
             };
+        }
+
+        /// <summary>
+        /// remove instance money
+        /// </summary>
+        /// <param name="amount"></param>
+        private void RemoveMoney(Money amount)
+        {
+            if (!HaveEnoughMoney(amount))
+            {
+                throw new InsufficientFundsException();
+            }
+            Amount = new Money()
+            {
+                Cents = Amount.Cents - amount.Cents,
+                Euros = Amount.Euros - amount.Euros
+            };
+        }
+
+        private bool HaveEnoughMoney(Money amount)
+        {
+            return Amount.Euros >= amount.Euros && Amount.Cents >= amount.Cents;
         }
 
         public Money ReturnMoney()
@@ -45,7 +72,21 @@
 
         public Product Buy(int productNumber)
         {
-            throw new System.NotImplementedException();
+            Product product;
+            try
+            {
+                product = Products[productNumber];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new ProductNotFoundException();
+            }
+            if (product.Available == 0)
+            {
+                throw new ProductNotAvailableException();
+            }
+            RemoveMoney(product.Price);
+            return product;
         }
     }
 }
