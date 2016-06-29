@@ -72,6 +72,14 @@ namespace YetAnotherVendingMachine
 
         public Product Buy(int productNumber)
         {
+            var product = FindProduct(productNumber);
+            RemoveMoney(product.Price);
+            DecreaseAvailableOfProduct(productNumber);
+            return product;
+        }
+
+        private Product FindProduct(int productNumber)
+        {
             Product product;
             try
             {
@@ -85,8 +93,17 @@ namespace YetAnotherVendingMachine
             {
                 throw new ProductNotAvailableException();
             }
-            RemoveMoney(product.Price);
             return product;
+        }
+
+        private void DecreaseAvailableOfProduct(int productNumber)
+        {
+            Products[productNumber] = new Product()
+            {
+                Available = Products[productNumber].Available - 1,
+                Price = Products[productNumber].Price,
+                Name = Products[productNumber].Name
+            };
         }
     }
 }
