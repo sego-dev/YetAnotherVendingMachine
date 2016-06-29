@@ -134,5 +134,25 @@ namespace YetAnotherVendingMachine.Tests
             vendingMachine.Buy(availableProduct);
             Assert.AreEqual(10, vendingMachine.Amount.Cents);
         }
+
+        [TestMethod]
+        public void ShouldDecreaseAvailableWhenBuySuccess()
+        {
+            var vendingMachine = new VendingMachine();
+            vendingMachine.InsertCoin(new Money() { Cents = 20 });
+            vendingMachine.Products = new[]
+            {
+                new Product()
+                {
+                    Available = 1,
+                    Price = new Money() {Cents = 10},
+                    Name = "Test Product"
+                }
+            };
+
+            int availableProduct = 0;
+            vendingMachine.Buy(availableProduct);
+            Assert.AreEqual(0, vendingMachine.Products[0].Available);
+        }
     }
 }
