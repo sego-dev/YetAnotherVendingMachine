@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CoinValidator.cs" />
     <Compile Include="CustomExceptions\InsufficientFundsException.cs" />
+    <Compile Include="CustomExceptions\ProductNotMoreOneException.cs" />
     <Compile Include="CustomExceptions\ProductNotAvailableException.cs" />
     <Compile Include="CustomExceptions\ProductNotFoundException.cs" />
     <Compile Include="CustomExceptions\WrongCoinsException.cs" />

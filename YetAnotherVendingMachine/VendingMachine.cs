@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -10,10 +11,13 @@ namespace YetAnotherVendingMachine
         {
             Amount = new Money();
             Products = new Product[] {};
+            _purchasedProducts = new List<int>();
         }
         public string Manufacturer { get; }
         public Money Amount { get; private set; }
         public Product[] Products { get; set; }
+
+        private List<int> _purchasedProducts;
 
         /// <summary> Inserts the coin into vending machine. </summary>
         /// <param name="amount">Coin amount.</param>
@@ -67,6 +71,8 @@ namespace YetAnotherVendingMachine
         {
             var moneyForReturn = Amount;
             Amount = new Money();
+            //Reset when money returned
+            _purchasedProducts = new List<int>();
             return moneyForReturn;
         }
 
@@ -75,12 +81,17 @@ namespace YetAnotherVendingMachine
             var product = FindProduct(productNumber);
             RemoveMoney(product.Price);
             DecreaseAvailableOfProduct(productNumber);
+            _purchasedProducts.Add(productNumber);
             return product;
         }
 
         private Product FindProduct(int productNumber)
         {
             Product product;
+            if (_purchasedProducts.Contains(productNumber))
+            {
+                throw new ProductNotMoreOneException();
+            }
             try
             {
                 product = Products[productNumber];
