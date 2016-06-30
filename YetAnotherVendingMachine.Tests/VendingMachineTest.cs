@@ -154,5 +154,27 @@ namespace YetAnotherVendingMachine.Tests
             vendingMachine.Buy(availableProduct);
             Assert.AreEqual(0, vendingMachine.Products[0].Available);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ProductNotMoreOneException))]
+        public void ShouldThrowExceptionWhenSecondProductForInsertedCoins()
+        {
+            var vendingMachine = new VendingMachine();
+            vendingMachine.InsertCoin(new Money() { Cents = 20 });
+
+            vendingMachine.Products = new[]
+            {
+                new Product()
+                {
+                    Available = 2,
+                    Price = new Money() {Cents = 10},
+                    Name = "Test Product"
+                }
+            };
+
+            int availableProduct = 0;
+            vendingMachine.Buy(availableProduct);
+            vendingMachine.Buy(availableProduct);
+        }
     }
 }
