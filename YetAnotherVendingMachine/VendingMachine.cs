@@ -7,11 +7,13 @@ namespace YetAnotherVendingMachine
 {
     public class VendingMachine : IVendingMachine
     {
+        private MoneyProvider _moneyProvider;
         public VendingMachine()
         {
             Amount = new Money();
             Products = new Product[] {};
             _purchasedProducts = new List<int>();
+            _moneyProvider = new MoneyProvider(this, new CoinValidator());
         }
         public string Manufacturer { get; }
         public Money Amount { get; private set; }
@@ -24,47 +26,8 @@ namespace YetAnotherVendingMachine
         /// <returns>Amount of inserted money</returns>
         public Money InsertCoin(Money amount)
         {
-            if (!CoinValidator.IsValid(amount))
-            {
-                throw new WrongCoinsException();
-            }
-            AddMoney(amount);
+            Amount = _moneyProvider.AddCoin(amount);
             return Amount;
-        }
-
-        /// <summary>
-        /// add instance money
-        /// </summary>
-        /// <param name="amount"></param>
-        private void AddMoney(Money amount)
-        {
-            Amount = new Money()
-            {
-                Cents = Amount.Cents + amount.Cents,
-                Euros = Amount.Euros + amount.Euros
-            };
-        }
-
-        /// <summary>
-        /// remove instance money
-        /// </summary>
-        /// <param name="amount"></param>
-        private void RemoveMoney(Money amount)
-        {
-            if (!HaveEnoughMoney(amount))
-            {
-                throw new InsufficientFundsException();
-            }
-            Amount = new Money()
-            {
-                Cents = Amount.Cents - amount.Cents,
-                Euros = Amount.Euros - amount.Euros
-            };
-        }
-
-        private bool HaveEnoughMoney(Money amount)
-        {
-            return Amount.Euros >= amount.Euros && Amount.Cents >= amount.Cents;
         }
 
         public Money ReturnMoney()
@@ -79,7 +42,7 @@ namespace YetAnotherVendingMachine
         public Product Buy(int productNumber)
         {
             var product = FindProduct(productNumber);
-            RemoveMoney(product.Price);
+            Amount = _moneyProvider.RemoveMoney(product.Price);
             DecreaseAvailableOfProduct(productNumber);
             _purchasedProducts.Add(productNumber);
             return product;

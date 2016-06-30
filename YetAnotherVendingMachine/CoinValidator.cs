@@ -1,6 +1,6 @@
 ﻿namespace YetAnotherVendingMachine
 {
-    public class CoinValidator
+    internal class CoinValidator : ICoinValidator
     {
         /// <summary>
         /// Validate inserted coin
@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="amount"></param>
         /// <returns></returns>
-        public static bool IsValid(Money amount)
+        public bool IsValid(Money amount)
         {
             return (amount.Cents == 5 && amount.Euros == 0)
                    || (amount.Cents == 10 && amount.Euros == 0)

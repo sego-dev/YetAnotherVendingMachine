@@ -46,8 +46,10 @@
     <Compile Include="CustomExceptions\ProductNotAvailableException.cs" />
     <Compile Include="CustomExceptions\ProductNotFoundException.cs" />
     <Compile Include="CustomExceptions\WrongCoinsException.cs" />
+    <Compile Include="ICoinValidator.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="IVendingMachine.cs" />
+    <Compile Include="MoneyProvider.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VendingMachine.cs" />
