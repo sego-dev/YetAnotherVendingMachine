@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace YetAnotherVendingMachine
 {
-    internal class ProductProvider
+    internal class ProductProvider : IProductProvider
     {
         private readonly IVendingMachine _vendingMachine;
 

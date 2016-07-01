@@ -4,20 +4,25 @@ namespace YetAnotherVendingMachine
 {
     public class VendingMachine : IVendingMachine
     {
-        private MoneyProvider _moneyProvider;
-        private ProductProvider _productProvider;
+        private IMoneyProvider _moneyProvider;
+        private IProductProvider _productProvider;
         /// <summary>
         /// Contains sold products in current session
         /// </summary>
         private List<int> _purchasedProducts;
 
-        public VendingMachine()
+        public VendingMachine() : this("ACME")
         {
             Amount = new Money();
             Products = new Product[] {};
             _purchasedProducts = new List<int>();
             _moneyProvider = new MoneyProvider(this, new CoinValidator());
             _productProvider = new ProductProvider(this);
+        }
+
+        public VendingMachine(string manufacturer) 
+        {
+            Manufacturer = manufacturer;
         }
 
         /// <summary> Vending machine manufacturer. </summary>
@@ -53,7 +58,7 @@ namespace YetAnotherVendingMachine
         {
             var product = _productProvider.SellProduct(productNumber, _purchasedProducts);
             Amount = _moneyProvider.RemoveMoney(product.Price);
-            
+
             return product;
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace YetAnotherVendingMachine
 {
-    internal class MoneyProvider
+    internal class MoneyProvider : IMoneyProvider
     {
         private readonly ICoinValidator _coinValidator;
         private readonly IVendingMachine _vendingMachine;

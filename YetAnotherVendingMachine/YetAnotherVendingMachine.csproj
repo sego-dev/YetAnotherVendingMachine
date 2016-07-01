@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Providers\IMoneyProvider.cs" />
+    <Compile Include="Providers\IProductProvider.cs" />
     <Compile Include="Validators\CoinValidator.cs" />
     <Compile Include="CustomExceptions\InsufficientFundsException.cs" />
     <Compile Include="CustomExceptions\ProductNotMoreOneException.cs" />
