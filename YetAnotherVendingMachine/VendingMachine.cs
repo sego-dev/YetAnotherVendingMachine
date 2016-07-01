@@ -13,16 +13,16 @@ namespace YetAnotherVendingMachine
 
         public VendingMachine() : this("ACME")
         {
-            Amount = new Money();
-            Products = new Product[] {};
-            _purchasedProducts = new List<int>();
-            _moneyProvider = new MoneyProvider(this, new CoinValidator());
-            _productProvider = new ProductProvider(this);
         }
 
         public VendingMachine(string manufacturer) 
         {
             Manufacturer = manufacturer;
+            Amount = new Money();
+            Products = new Product[] { };
+            _purchasedProducts = new List<int>();
+            _moneyProvider = new MoneyProvider(this, new CoinValidator());
+            _productProvider = new ProductProvider(this);
         }
 
         /// <summary> Vending machine manufacturer. </summary>
