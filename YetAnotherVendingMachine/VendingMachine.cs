@@ -1,35 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 
 namespace YetAnotherVendingMachine
 {
     public class VendingMachine : IVendingMachine
     {
         private MoneyProvider _moneyProvider;
+        private ProductProvider _productProvider;
+        /// <summary>
+        /// Contains sold products in current session
+        /// </summary>
+        private List<int> _purchasedProducts;
+
         public VendingMachine()
         {
             Amount = new Money();
             Products = new Product[] {};
             _purchasedProducts = new List<int>();
             _moneyProvider = new MoneyProvider(this, new CoinValidator());
+            _productProvider = new ProductProvider(this);
         }
-        public string Manufacturer { get; }
-        public Money Amount { get; private set; }
-        public Product[] Products { get; set; }
 
-        private List<int> _purchasedProducts;
+        /// <summary> Vending machine manufacturer. </summary>
+        public string Manufacturer { get; }
+        /// <summary> Amount of money inserted into vending machine.  </summary>
+        public Money Amount { get; private set; }
+        /// <summary> Products that are sold. </summary>
+        public Product[] Products { get; set; }
 
         /// <summary> Inserts the coin into vending machine. </summary>
         /// <param name="amount">Coin amount.</param>
-        /// <returns>Amount of inserted money</returns>
         public Money InsertCoin(Money amount)
         {
             Amount = _moneyProvider.AddCoin(amount);
             return Amount;
         }
 
+        /// <summary> Returns all inserted coins back to user. </summary>
         public Money ReturnMoney()
         {
             var moneyForReturn = Amount;
@@ -39,45 +45,16 @@ namespace YetAnotherVendingMachine
             return moneyForReturn;
         }
 
+        /// <summary>
+        /// Buys product from list of product.
+        /// </summary>
+        /// <param name="productNumber">Product number in vending machine product list.</param>
         public Product Buy(int productNumber)
         {
-            var product = FindProduct(productNumber);
+            var product = _productProvider.SellProduct(productNumber, _purchasedProducts);
             Amount = _moneyProvider.RemoveMoney(product.Price);
-            DecreaseAvailableOfProduct(productNumber);
-            _purchasedProducts.Add(productNumber);
+            
             return product;
-        }
-
-        private Product FindProduct(int productNumber)
-        {
-            Product product;
-            if (_purchasedProducts.Contains(productNumber))
-            {
-                throw new ProductNotMoreOneException();
-            }
-            try
-            {
-                product = Products[productNumber];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                throw new ProductNotFoundException();
-            }
-            if (product.Available == 0)
-            {
-                throw new ProductNotAvailableException();
-            }
-            return product;
-        }
-
-        private void DecreaseAvailableOfProduct(int productNumber)
-        {
-            Products[productNumber] = new Product()
-            {
-                Available = Products[productNumber].Available - 1,
-                Price = Products[productNumber].Price,
-                Name = Products[productNumber].Name
-            };
         }
     }
 }
