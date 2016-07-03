@@ -21,6 +21,18 @@ namespace YetAnotherVendingMachine
             _productProvider = new ProductProvider(this);
         }
 
+        public IMoneyProvider MoneyProvider
+        {
+            get { return _moneyProvider; }
+            set { _moneyProvider = value; }
+        }
+
+        public IProductProvider ProductProvider
+        {
+            get { return _productProvider; }
+            set { _productProvider = value; }
+        }
+
         /// <summary> Vending machine manufacturer. </summary>
         public string Manufacturer { get; }
         /// <summary> Amount of money inserted into vending machine.  </summary>

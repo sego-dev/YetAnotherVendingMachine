@@ -1,6 +1,6 @@
 ﻿namespace YetAnotherVendingMachine
 {
-    internal interface IMoneyProvider
+    public interface IMoneyProvider
     {
         Money AddCoin(Money coin);
         bool HaveEnoughMoney(Money amount);

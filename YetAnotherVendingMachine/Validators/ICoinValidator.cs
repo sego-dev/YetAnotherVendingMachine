@@ -1,6 +1,6 @@
 ﻿namespace YetAnotherVendingMachine
 {
-    internal interface ICoinValidator
+    public interface ICoinValidator
     {
         bool IsValid(Money coin);
     }
