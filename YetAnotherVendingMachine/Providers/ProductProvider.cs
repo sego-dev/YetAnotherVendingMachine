@@ -18,10 +18,11 @@ namespace YetAnotherVendingMachine
         }
 
         /// <summary>
-        /// Give product
+        /// Give available product
         /// </summary>
         public Product GiveProduct(int productNumber)
         {
+            //You can buy 1 product at once for inserted coins
             if (_purchasedProducts.Contains(productNumber))
             {
                 throw new ProductNotMoreOneException();
@@ -65,7 +66,7 @@ namespace YetAnotherVendingMachine
         /// <param name="productNumber"></param>
         /// <returns><see cref="Product"/></returns>
         /// <exception cref="ProductNotFoundException"></exception>
-        private Product GetProduct(int productNumber)
+        public Product GetProduct(int productNumber)
         {
             Product product;
             try

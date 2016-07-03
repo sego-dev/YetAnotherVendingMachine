@@ -52,9 +52,14 @@ namespace YetAnotherVendingMachine
         /// <param name="productNumber">Product number in vending machine product list.</param>
         public Product Buy(int productNumber)
         {
-            var product = _productProvider.GiveProduct(productNumber);
+            var product = _productProvider.GetProduct(productNumber);
+            if (!_moneyProvider.HaveEnoughMoney(product.Price))
+            {
+                throw new InsufficientFundsException();
+            }
+            product = _productProvider.GiveProduct(productNumber);
             Amount = _moneyProvider.RemoveMoney(product.Price);
-
+            
             return product;
         }
     }

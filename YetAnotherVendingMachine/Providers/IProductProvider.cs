@@ -5,9 +5,14 @@ namespace YetAnotherVendingMachine
     public interface IProductProvider
     {
         /// <summary>
-        /// Give product
+        /// Give available product
         /// </summary>
         Product GiveProduct(int productNumber);
+
+        /// <summary>
+        /// Find product by product number
+        /// </summary>
+        Product GetProduct(int productNumber);
 
         /// <summary>
         /// Reset information about the purchased products

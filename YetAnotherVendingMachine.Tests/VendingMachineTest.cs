@@ -82,6 +82,7 @@ namespace YetAnotherVendingMachine.Tests
         public void ShouldThrowExceptionWhenProductNotAvailable()
         {
             var vendingMachine = new VendingMachine();
+            vendingMachine.InsertCoin(new Money() {Cents = 20});
             vendingMachine.Products = new[]
             {
                 new Product()
@@ -139,7 +140,7 @@ namespace YetAnotherVendingMachine.Tests
         public void ShouldDecreaseAvailableWhenBuySuccess()
         {
             var vendingMachine = new VendingMachine();
-            vendingMachine.InsertCoin(new Money() { Cents = 20 });
+            vendingMachine.InsertCoin(new Money() {Cents = 20});
             vendingMachine.Products = new[]
             {
                 new Product()
@@ -156,11 +157,11 @@ namespace YetAnotherVendingMachine.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ProductNotMoreOneException))]
+        [ExpectedException(typeof (ProductNotMoreOneException))]
         public void ShouldThrowExceptionWhenSecondProductForInsertedCoins()
         {
             var vendingMachine = new VendingMachine();
-            vendingMachine.InsertCoin(new Money() { Cents = 20 });
+            vendingMachine.InsertCoin(new Money() {Cents = 20});
 
             vendingMachine.Products = new[]
             {
@@ -175,6 +176,34 @@ namespace YetAnotherVendingMachine.Tests
             int availableProduct = 0;
             vendingMachine.Buy(availableProduct);
             vendingMachine.Buy(availableProduct);
+        }
+
+        [TestMethod]
+        public void ShouldNotDecreaseAvailableWhenNotMoney()
+        {
+            var vendingMachine = new VendingMachine();
+            vendingMachine.InsertCoin(new Money() {Cents = 5});
+            vendingMachine.Products = new[]
+            {
+                new Product()
+                {
+                    Available = 1,
+                    Price = new Money() {Cents = 10},
+                    Name = "Test Product"
+                }
+            };
+
+            int availableProduct = 0;
+            try
+            {
+                vendingMachine.Buy(availableProduct);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            Assert.AreEqual(1, vendingMachine.Products[0].Available);
         }
     }
 }
