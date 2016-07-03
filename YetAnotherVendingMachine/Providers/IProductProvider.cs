@@ -2,10 +2,16 @@
 
 namespace YetAnotherVendingMachine
 {
-    internal interface IProductProvider
+    public interface IProductProvider
     {
-        void DecreaseAvailabledProduct(int productNumber);
-        Product GetProduct(int productNumber);
-        Product SellProduct(int productNumber, List<int> purchasedProducts);
+        /// <summary>
+        /// Give product
+        /// </summary>
+        Product GiveProduct(int productNumber);
+
+        /// <summary>
+        /// Reset information about the purchased products
+        /// </summary>
+        void ResetState();
     }
 }

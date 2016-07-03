@@ -6,15 +6,23 @@ namespace YetAnotherVendingMachine
     internal class ProductProvider : IProductProvider
     {
         private readonly IVendingMachine _vendingMachine;
+        /// <summary>
+        /// Contains sold products in current session
+        /// </summary>
+        private List<int> _purchasedProducts;
 
         public ProductProvider(IVendingMachine vendingMachine)
         {
             _vendingMachine = vendingMachine;
+            _purchasedProducts = new List<int>();
         }
 
-        public Product SellProduct(int productNumber, List<int> purchasedProducts)
+        /// <summary>
+        /// Give product
+        /// </summary>
+        public Product GiveProduct(int productNumber)
         {
-            if (purchasedProducts.Contains(productNumber))
+            if (_purchasedProducts.Contains(productNumber))
             {
                 throw new ProductNotMoreOneException();
             }
@@ -24,16 +32,23 @@ namespace YetAnotherVendingMachine
                 throw new ProductNotAvailableException();
             }
             DecreaseAvailabledProduct(productNumber);
-            //todo: unexpected behavior, move to more related method
-            purchasedProducts.Add(productNumber);
+            _purchasedProducts.Add(productNumber);
             return product;
+        }
+
+        /// <summary>
+        /// Reset information about the purchased products
+        /// </summary>
+        public void ResetState()
+        {
+            _purchasedProducts = new List<int>();
         }
 
         /// <summary>
         /// Decrease available amount of product  
         /// </summary>
         /// <param name="productNumber"></param>
-        public void DecreaseAvailabledProduct(int productNumber)
+        private void DecreaseAvailabledProduct(int productNumber)
         {
             var product = GetProduct(productNumber);
             _vendingMachine.Products[productNumber] = new Product()
@@ -50,7 +65,7 @@ namespace YetAnotherVendingMachine
         /// <param name="productNumber"></param>
         /// <returns><see cref="Product"/></returns>
         /// <exception cref="ProductNotFoundException"></exception>
-        public Product GetProduct(int productNumber)
+        private Product GetProduct(int productNumber)
         {
             Product product;
             try

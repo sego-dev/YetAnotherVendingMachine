@@ -6,10 +6,7 @@ namespace YetAnotherVendingMachine
     {
         private IMoneyProvider _moneyProvider;
         private IProductProvider _productProvider;
-        /// <summary>
-        /// Contains sold products in current session
-        /// </summary>
-        private List<int> _purchasedProducts;
+        
 
         public VendingMachine() : this("ACME")
         {
@@ -20,7 +17,6 @@ namespace YetAnotherVendingMachine
             Manufacturer = manufacturer;
             Amount = new Money();
             Products = new Product[] { };
-            _purchasedProducts = new List<int>();
             _moneyProvider = new MoneyProvider(this, new CoinValidator());
             _productProvider = new ProductProvider(this);
         }
@@ -46,7 +42,7 @@ namespace YetAnotherVendingMachine
             var moneyForReturn = Amount;
             Amount = new Money();
             //Reset when money returned
-            _purchasedProducts = new List<int>();
+            _productProvider.ResetState();
             return moneyForReturn;
         }
 
@@ -56,7 +52,7 @@ namespace YetAnotherVendingMachine
         /// <param name="productNumber">Product number in vending machine product list.</param>
         public Product Buy(int productNumber)
         {
-            var product = _productProvider.SellProduct(productNumber, _purchasedProducts);
+            var product = _productProvider.GiveProduct(productNumber);
             Amount = _moneyProvider.RemoveMoney(product.Price);
 
             return product;
