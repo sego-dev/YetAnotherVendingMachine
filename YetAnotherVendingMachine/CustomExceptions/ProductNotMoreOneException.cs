@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YetAnotherVendingMachine
 {
-    class ProductNotMoreOneException : InvalidOperationException
+    internal class ProductNotMoreOneException : Exception
     {
-        public ProductNotMoreOneException() : base("You can't buy product twice")
+        public ProductNotMoreOneException()
         {
-            
+        }
+
+        public ProductNotMoreOneException(string message)
+            : base(message)
+        {
+        }
+
+        public ProductNotMoreOneException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

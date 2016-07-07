@@ -2,9 +2,19 @@
 
 namespace YetAnotherVendingMachine
 {
-    internal class WrongCoinsException : ArgumentOutOfRangeException
+    internal class WrongCoinsException : Exception
     {
-        public WrongCoinsException() : base("You insert wrong coin")
+        public WrongCoinsException()
+        {
+        }
+
+        public WrongCoinsException(string message)
+            : base(message)
+        {
+        }
+
+        public WrongCoinsException(string message, Exception inner)
+            : base(message, inner)
         {
         }
     }

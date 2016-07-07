@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YetAnotherVendingMachine
 {
-    class ProductNotAvailableException : InvalidOperationException
+    internal class ProductNotAvailableException : Exception
     {
-        public ProductNotAvailableException() : base("Product not available")
+        public ProductNotAvailableException()
         {
-            
+        }
+
+        public ProductNotAvailableException(string message)
+            : base(message)
+        {
+        }
+
+        public ProductNotAvailableException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }
