@@ -29,11 +29,39 @@
             {
                 throw new WrongCoinsException();
             }
-            return new Money()
+            return CombineWithAccount(coin);
+        }
+
+        private Money CombineWithAccount(Money coin)
+        {
+            var newAccountState = new Money()
             {
                 Cents = _vendingMachine.Amount.Cents + coin.Cents,
                 Euros = _vendingMachine.Amount.Euros + coin.Euros
             };
+            if (newAccountState.Cents >= 100)
+            {
+                newAccountState = ConvertToEuros(newAccountState);
+            }
+
+            return newAccountState;
+        }
+
+        /// <summary>
+        /// Try to convert to euros each 100 cents
+        /// </summary>
+        /// <param name="newAccountState"></param>
+        /// <returns></returns>
+        private static Money ConvertToEuros(Money newAccountState)
+        {
+            var convertToEuros = newAccountState.Cents / 100;
+            var newCentsAmount = newAccountState.Cents % 100;
+            newAccountState = new Money()
+            {
+                Cents = newCentsAmount,
+                Euros = newAccountState.Euros + convertToEuros
+            };
+            return newAccountState;
         }
 
         /// <summary>

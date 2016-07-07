@@ -43,6 +43,39 @@ namespace YetAnotherVendingMachine.Tests
         }
 
         [TestMethod]
+        public void ShouldConvertToEurosWhenCentsOver100()
+        {
+            var vendingMachine = new VendingMachine();
+            var coin = new Money()
+            {
+                Cents = 50
+            };
+            var expectedMoney = new Money() { Cents = 50, Euros = 1 };
+
+            vendingMachine.InsertCoin(coin);
+            vendingMachine.InsertCoin(coin);
+            var insertedMoney = vendingMachine.InsertCoin(coin);
+
+            Assert.AreEqual(expectedMoney, insertedMoney);
+        }
+
+        [TestMethod]
+        public void ShouldConvertToEurosWhenCentsEqual100()
+        {
+            var vendingMachine = new VendingMachine();
+            var coin = new Money()
+            {
+                Cents = 50
+            };
+            var expectedMoney = new Money() { Euros = 1};
+
+            vendingMachine.InsertCoin(coin);
+            var insertedMoney = vendingMachine.InsertCoin(coin);
+
+            Assert.AreEqual(expectedMoney, insertedMoney);
+        }
+
+        [TestMethod]
         public void ShouldResetMoneyWhenReturn()
         {
             var vendingMachine = new VendingMachine();
