@@ -111,6 +111,15 @@ namespace YetAnotherVendingMachine.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ProductNotFoundException))]
+        public void ShouldThrowExceptionWhenProductNumberIsNegotive()
+        {
+            var vendingMachine = new VendingMachine();
+            int negativeProductNumber = -1;
+            vendingMachine.Buy(negativeProductNumber);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ProductValidateException))]
         public void ShouldThrowExceptionWhenProductAvailableLessZero()
         {
