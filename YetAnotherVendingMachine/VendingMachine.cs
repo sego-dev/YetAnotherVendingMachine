@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace YetAnotherVendingMachine
 {
@@ -6,6 +7,8 @@ namespace YetAnotherVendingMachine
     {
         private IMoneyProvider _moneyProvider;
         private IProductProvider _productProvider;
+        private IProductValidator _productValidator;
+        private Product[] _products;
         
 
         public VendingMachine() : this("ACME")
@@ -16,6 +19,8 @@ namespace YetAnotherVendingMachine
         {
             Manufacturer = manufacturer;
             Amount = new Money();
+            //should be initialized before set products
+            _productValidator = new ProductValidator();
             Products = new Product[] { };
             _moneyProvider = new MoneyProvider(this, new CoinValidator());
             _productProvider = new ProductProvider(this);
@@ -38,7 +43,14 @@ namespace YetAnotherVendingMachine
         /// <summary> Amount of money inserted into vending machine.  </summary>
         public Money Amount { get; private set; }
         /// <summary> Products that are sold. </summary>
-        public Product[] Products { get; set; }
+        public Product[] Products {
+            get { return _products; }
+            set
+            {
+                _productValidator.Validate(value);
+                _products = value;
+            }
+        }
 
         /// <summary> Inserts the coin into vending machine. </summary>
         /// <param name="amount">Coin amount.</param>

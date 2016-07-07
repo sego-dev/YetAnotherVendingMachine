@@ -111,6 +111,22 @@ namespace YetAnotherVendingMachine.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ProductValidateException))]
+        public void ShouldThrowExceptionWhenProductAvailableLessZero()
+        {
+            var vendingMachine = new VendingMachine();
+            vendingMachine.Products = new[]
+            {
+                new Product()
+                {
+                    Available = -1,
+                    Price = new Money() {Cents = 10},
+                    Name = "Test Product"
+                }
+            };
+        }
+
+        [TestMethod]
         [ExpectedException(typeof (ProductNotAvailableException))]
         public void ShouldThrowExceptionWhenProductNotAvailable()
         {
